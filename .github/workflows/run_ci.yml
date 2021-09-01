@@ -19,13 +19,16 @@ jobs:
           dotnet-version: '5.x'
       - name: Install DepotDownloader
         run: |
+          mkdir DepotDownloader
+          cd DepotDownloader
           wget https://github.com/SteamRE/DepotDownloader/releases/download/DepotDownloader_2.4.4/depotdownloader-2.4.4.zip
-          unzip depotdownloader-2.4.4.zip '*.dll' '*.pdb'
+          unzip depotdownloader-2.4.4.zip '*.dll' '*.pdb' '*.json' '*.config'
+          cd ..
       - name: Setup DepotDownloader
         run: |
           echo 'regex:CoQ_Data/Managed/.+\.dll' > requirements.txt
       - name: Run DepotDownloader
         run: |
-          dotnet DepotDownloader.dll -app 333640 -branch public -filelist requirements.txt -dir .
+          dotnet DepotDownloader/DepotDownloader.dll -app 333640 -branch public -filelist requirements.txt -dir ..
       - name: Build
         run: dotnet build
