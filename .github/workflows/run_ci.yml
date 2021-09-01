@@ -32,6 +32,6 @@ jobs:
           STEAM_UNAME: ${{ secrets.STEAM_UNAME }}
           STEAM_PASS: ${{ secrets.STEAM_PASS }}
         run: |
-          dotnet DepotDownloader/DepotDownloader.dll -app 333640 -branch public -filelist requirements.txt -dir .. -username '$STEAM_UNAME' -password '$STEAM_PASS'
+          dotnet DepotDownloader/DepotDownloader.dll -app 333640 -branch public -filelist requirements.txt -dir .. -username $STEAM_UNAME -password $STEAM_PASS
       - name: Build
         run: dotnet build
