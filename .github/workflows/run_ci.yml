@@ -1,0 +1,37 @@
+name: Run CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core SDK 5.x
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.x'
+      - name: Install DepotDownloader
+        run: |
+          mkdir DepotDownloader
+          cd DepotDownloader
+          wget https://github.com/SteamRE/DepotDownloader/releases/download/DepotDownloader_2.4.4/depotdownloader-2.4.4.zip
+          unzip depotdownloader-2.4.4.zip '*.dll' '*.pdb' '*.json' '*.config'
+          cd ..
+      - name: Setup DepotDownloader
+        run: |
+          echo 'regex:CoQ_Data/Managed/.+\.dll' > requirements.txt
+      - name: Run DepotDownloader
+        env:
+          STEAM_UNAME: ${{ secrets.STEAM_UNAME }}
+          STEAM_PASS: ${{ secrets.STEAM_PASS }}
+        run: |
+          dotnet DepotDownloader/DepotDownloader.dll -app 333640 -branch public -filelist requirements.txt -dir .. -username $STEAM_UNAME -password $STEAM_PASS
+      - name: Build
+        run: dotnet build
