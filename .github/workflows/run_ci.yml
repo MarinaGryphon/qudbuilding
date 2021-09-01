@@ -19,8 +19,8 @@ jobs:
           dotnet-version: '5.x'
       - name: Install DepotDownloader
         run: |
-          wget https://github.com/SteamRE/DepotDownloader/releases/tag/DepotDownloader_2.4.4
-          unzip DepotDownloader_2.4.4
+          wget https://github.com/SteamRE/DepotDownloader/releases/download/DepotDownloader_2.4.4/depotdownloader-2.4.4.zip
+          unzip depotdownloader-2.4.4.zip
       - name: Setup DepotDownloader
         run: |
           echo 'regex:CoQ_Data/Managed/.+\.dll' > requirements.txt
